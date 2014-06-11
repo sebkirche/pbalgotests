@@ -4,5 +4,6 @@ Save Format v3.0(19990112)
 @end;
 @begin Objects
  "nv_hash.sru" "algotests90.pbl";
+ "nv_dl_listitem.sru" "algotests90.pbl";
  "algotests90.sra" "algotests90.pbl";
 @end;

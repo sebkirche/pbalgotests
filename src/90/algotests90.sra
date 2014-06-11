@@ -49,11 +49,19 @@ m += "~r~nbozo le colwn=" + string(h.hash("bozo le colwn"))
 
 messagebox("hashes", m)
 
-h.add("truc", "valeur truc")
-h.add("machin", "valeur machin")
-h.add("trcu", "valeur trcu")
+h.set("truc", "valeur truc")
+h.set("machin", "valeur machin")
+h.set("trcu", "valeur trcu")
 
 any val
+if h.get("truc", val) then
+	messagebox("test get", string(val))
+else
+	messagebox("test get", "not found")
+end if
+
+h.remove("truc")
+
 if h.get("truc", val) then
 	messagebox("test get", string(val))
 else
