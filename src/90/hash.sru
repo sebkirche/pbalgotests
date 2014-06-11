@@ -1,17 +1,22 @@
-$PBExportHeader$nv_hash.sru
+$PBExportHeader$hash.sru
 forward
-global type nv_hash from nonvisualobject
+global type hash from nonvisualobject
 end type
 end forward
 
-global type nv_hash from nonvisualobject
+global type hash from nonvisualobject
 end type
-global nv_hash nv_hash
+global hash hash
+
+type prototypes
+
+SUBROUTINE OutputDebugString (String lpszOutputString)  LIBRARY "kernel32.dll" ALIAS FOR "OutputDebugStringA";
+
+end prototypes
 
 type variables
 
 //PowerBuilder implementation of a hash table
-
 
 private:
 
@@ -22,17 +27,16 @@ private:
 constant long n_hash = 10007 //400093
 constant long b_hash = 256
 
-nv_dl_listitem buckets[10007]	//cannot use a constant to size the array
+dl_listitem buckets[10007]	//cannot use a constant to size the array
 
 end variables
-
 forward prototypes
 public function long hash (string s)
 public subroutine remove (string as_key)
 public function boolean get (string as_key, ref any as_val)
 public function boolean exists (string as_key)
 public subroutine set (string as_key, any aa_value)
-public function boolean lookup (string as_key, ref nv_dl_listitem an_item)
+public function boolean lookup (string as_key, ref dl_listitem an_item)
 end prototypes
 
 public function long hash (string s);
@@ -45,7 +49,7 @@ for i = 1 to length
 	val = mod (val * b_hash + asc(mid(s, i, 1)), n_hash)
 next
 
-return val
+return val + 1 //PB arrays start at 1 by default
 
 end function
 
@@ -56,7 +60,7 @@ public subroutine remove (string as_key);
 // we flag it as 'empty'
 
 long ll_hashval, i
-nv_dl_listitem item
+dl_listitem item
 
 ll_hashval = hash(as_key)
 if lookup(as_key, item) then
@@ -76,7 +80,7 @@ public function boolean get (string as_key, ref any as_val);
 //search for a value in the hash
 // return true if found and fill the as_val
 
-nv_dl_listitem item
+dl_listitem item
 
 if lookup(as_key, item) then
 	as_val = item.value
@@ -90,7 +94,7 @@ end function
 public function boolean exists (string as_key);
 // test for the existence of a key
 
-nv_dl_listitem item
+dl_listitem item
 
 return lookup(as_key, item)
 
@@ -98,12 +102,13 @@ end function
 
 public subroutine set (string as_key, any aa_value);
 long ll_hashval
-nv_dl_listitem curitem, newitem
+dl_listitem curitem, newitem
 
 ll_hashval = hash(as_key)
 
 curitem = buckets[ll_hashval]
 do while not isnull(curitem) and isvalid(curitem)
+	OutputDebugString("collision: " + as_key + " collides with " + curitem.key + string(ll_hashval))
 	if curitem.key = as_key then
 		//found the key in the bucket, replace the value
 		curitem.value = aa_value
@@ -112,7 +117,7 @@ do while not isnull(curitem) and isvalid(curitem)
 	curitem = curitem.dl_next
 loop
 
-newitem = create nv_dl_listitem
+newitem = create dl_listitem
 newitem.key = as_key
 newitem.value = aa_value
 if not isnull(curitem) and isvalid(curitem) then
@@ -124,13 +129,13 @@ end if
 
 end subroutine
 
-public function boolean lookup (string as_key, ref nv_dl_listitem an_item);
+public function boolean lookup (string as_key, ref dl_listitem an_item);
 //lookup of a key in the hash
 //
 // if found, get the bucket and the item index
 
 long ll_hashval, i
-nv_dl_listitem item
+dl_listitem item
 
 ll_hashval = hash(as_key)
 
@@ -148,12 +153,12 @@ return false
 
 end function
 
-on nv_hash.create
+on hash.create
 call super::create
 TriggerEvent( this, "constructor" )
 end on
 
-on nv_hash.destroy
+on hash.destroy
 TriggerEvent( this, "destructor" )
 call super::destroy
 end on

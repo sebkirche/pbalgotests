@@ -34,8 +34,8 @@ end on
 
 event open;
 
-nv_hash h
-h = create nv_hash
+hash h
+h = create hash
 
 string m
 m = "hello=" + string(h.hash("hello"))
@@ -70,6 +70,19 @@ end if
 
 messagebox("test exists", 'exists("machin")='+string(h.exists("machin")))
 messagebox("test exists", 'exists("other")='+string(h.exists("other")))
+
+word_generator wg
+wg = create word_generator
+wg.init("      ", 'A', 'Z')
+
+int i
+for i = 1 to 655//36
+	h.set(wg.next_seq_word() , true) //it will output collisions in DebugView
+	yield()
+next
+
+
+destroy wg
 
 destroy h
 
