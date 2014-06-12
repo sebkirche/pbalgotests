@@ -20,6 +20,25 @@ dl_listitem dl_prev
 dl_listitem dl_next
 
 end variables
+
+forward prototypes
+public function long size ()
+end prototypes
+
+public function long size ();
+long c = 0
+dl_listitem item
+
+item = this
+do while not isnull(item) and isvalid(item)
+	c++
+	item = item.dl_next
+loop
+
+return c
+
+end function
+
 on dl_listitem.create
 call super::create
 TriggerEvent( this, "constructor" )

@@ -71,20 +71,55 @@ end if
 messagebox("test exists", 'exists("machin")='+string(h.exists("machin")))
 messagebox("test exists", 'exists("other")='+string(h.exists("other")))
 
+/* test auto generated
 word_generator wg
 wg = create word_generator
 wg.init("      ", 'A', 'Z')
-
 long i
 for i = 1 to 65536
 	h.set(wg.next_seq_word() , true) //it will output collisions in DebugView
 	yield()
 next
-h.dump_collisions("collisions.pl")
-
 destroy wg
+*/
+
+/*
+int f, p, r
+string ls_line, ls_key, ls_val
+f = fileopen("data\freq.txt", linemode!, read!)
+if f > -1 then
+	do 
+		r = FileRead(f, ls_line)
+		if r > 0 then
+			p = pos(ls_line, "~t")
+			ls_key = left(ls_line, p - 1)
+			ls_val = mid(ls_line, p + 1)
+			h.set(ls_key, ls_val)
+		end if
+	loop while r > 0
+end if
+fileclose(f)
+
+h.dump_collisions("collisions.pl")
+*/
 
 destroy h
+
+bench_hash bh
+bh = create bench_hash
+any empty[]
+//59359 //10007 //400093
+
+bh.mark({10007})
+
+bh.mark(empty[])
+
+bh.mark({400093})
+
+
+
+destroy bh
+
 
 
 end event

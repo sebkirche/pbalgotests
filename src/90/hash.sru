@@ -24,11 +24,10 @@ private:
  - the b_hash parameter must be a power of 2
  - the n_hash parameter must be a prime number, not close of a power of 2
 */
-constant long n_hash = 10007 //400093
-constant long b_hash = 256
-
-dl_listitem buckets[10007]	//cannot use a constant to size the array
-
+long n_hash = 59359 //10007 //400093
+long b_hash = 256
+dl_listitem buckets[]
+ulong il_count = 0
 end variables
 
 forward prototypes
@@ -39,6 +38,9 @@ public function boolean exists (string as_key)
 public subroutine set (string as_key, any aa_value)
 public function boolean lookup (string as_key, ref dl_listitem an_item)
 public subroutine dump_collisions (string as_filename)
+public function long count ()
+public function long size ()
+public subroutine realloc (long al_size)
 end prototypes
 
 public function long hash (string s);
@@ -74,6 +76,7 @@ if lookup(as_key, item) then
 		end if
 	end if
 	destroy item
+	il_count --
 end if
 
 end subroutine
@@ -128,6 +131,7 @@ if not isnull(curitem) and isvalid(curitem) then
 	newitem.dl_next = curitem
 end if
 buckets[ll_hashval] = newitem
+il_count ++
 
 end subroutine
 
@@ -164,29 +168,61 @@ dump = fileopen(as_filename, linemode!, write!, lockwrite!, replace!)
 
 if dump = 0 then return
 
-FileWrite(dump, "my %colls = ();")
+FileWrite(dump, "use feature 'say';~r~n &
+#n_hash (hash size) = " + string(size()) + "~r~n &
+#b_hash = " + string(b_hash) + "~r~n &
+my %colls = ();")
 
 for buck = 1 to upperbound(buckets[])
 	item = buckets[buck]
 	if isnull(item) or not isvalid(item) then continue
-	c = 0
+	c = item.size()
+	if item.size() < 2 then continue
+	if c > vmax then vmax = c 
 	FileWrite(dump, "$colls{" + string(buck) + "}=[")
 	do while not isnull(item) and isvalid(item)
-		c++
-		if c > vmax then vmax = c 
 		FileWrite(dump,"'" + item.key + "',")
 		item = item.dl_next
 	loop
 	FileWrite(dump, "];");
 next
-FileWrite(dump, "# maximum collision = " + string(vmax) + "~r~n &
-use feature 'say';~r~n &
+FileWrite(dump, "# maximum collision = " + string(vmax) + " for " + string(count()) + " items ~r~n &
 my $sum = 0, $avg = 0;~r~n &
 ($sum += scalar @$_) foreach values %colls;~r~n &
 $avg = $sum / keys %colls;~r~n &
-say ~"avg = $avg~";")
+say ~"count = ~" . (scalar keys %colls) . ~" avg = $avg~";~r~n &
+# 10 first collisions by decreasing count~r~n &
+say $_, ' ', scalar @{$colls{$_}}, ' ', '[',join(',',@{$colls{$_}}),']' for (sort {scalar @{$colls{$b}} <=> scalar @{$colls{$a}}} keys %colls)[0..9];~r~n &
+~r~n &
+#~ my $sum = 0, $avg = 0;~r~n &
+#~ ($sum += scalar @$_) foreach values %colls;~r~n &
+#~ $avg = $sum / keys %colls;~r~n &
+#~ say ~"avg = $avg~";~r~n &
+#~ say '[',join(',',@$_),']' for grep {scalar @$_ > $avg} values %colls;~r~n &
+#~ say $_,'[',join(',',@{$colls{$_}}),']' for sort{$a<=>$b} grep {1 or scalar @{$colls{$_}} > $avg} keys %colls;~r~n")
 
 fileclose(dump)
+
+end subroutine
+
+public function long count ();
+return il_count
+
+end function
+
+public function long size ();
+return upperbound(buckets[])
+
+end function
+
+public subroutine realloc (long al_size);
+dl_listitem new[]
+dl_listitem item
+
+new[al_size] = item
+
+buckets[] = new[]
+n_hash = al_size
 
 end subroutine
 
@@ -199,4 +235,12 @@ on hash.destroy
 TriggerEvent( this, "destructor" )
 call super::destroy
 end on
+
+event constructor;
+dl_listitem init[59359]
+
+buckets[] = init[]
+
+
+end event
 

@@ -3,8 +3,10 @@ Save Format v3.0(19990112)
  "algotests90.pbl" "";
 @end;
 @begin Objects
+ "bench.sru" "algotests90.pbl";
  "hash.sru" "algotests90.pbl";
  "dl_listitem.sru" "algotests90.pbl";
  "word_generator.sru" "algotests90.pbl";
  "algotests90.sra" "algotests90.pbl";
+ "bench_hash.sru" "algotests90.pbl";
 @end;
