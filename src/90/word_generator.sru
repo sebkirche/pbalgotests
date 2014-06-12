@@ -28,7 +28,7 @@ end prototypes
 
 public function string increment_char (integer ai_pos);
 int li_pos
-li_pos = upperbound(ic_word) - ai_pos
+li_pos = upperbound(ic_word) - ai_pos + 1
 
 if ic_word[li_pos] = char(32) then
 	ic_word[li_pos] = ic_first
@@ -41,7 +41,7 @@ if asc(ic_word[li_pos]) > asc(ic_last) then
 	if ai_pos < upperbound(ic_word) then increment_char(ai_pos+1)
 end if
 
-return ic_word
+return lefttrim(ic_word)
 
 end function
 
