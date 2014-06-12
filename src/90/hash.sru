@@ -30,6 +30,7 @@ constant long b_hash = 256
 dl_listitem buckets[10007]	//cannot use a constant to size the array
 
 end variables
+
 forward prototypes
 public function long hash (string s)
 public subroutine remove (string as_key)
@@ -37,6 +38,7 @@ public function boolean get (string as_key, ref any as_val)
 public function boolean exists (string as_key)
 public subroutine set (string as_key, any aa_value)
 public function boolean lookup (string as_key, ref dl_listitem an_item)
+public subroutine dump_collisions (string as_filename)
 end prototypes
 
 public function long hash (string s);
@@ -117,15 +119,15 @@ do while not isnull(curitem) and isvalid(curitem)
 	curitem = curitem.dl_next
 loop
 
+curitem = buckets[ll_hashval]
 newitem = create dl_listitem
 newitem.key = as_key
 newitem.value = aa_value
 if not isnull(curitem) and isvalid(curitem) then
-	curitem.dl_next = newitem
-	newitem.dl_prev = curitem
-else
-	buckets[ll_hashval] = newitem
+	curitem.dl_prev = newitem
+	newitem.dl_next = curitem
 end if
+buckets[ll_hashval] = newitem
 
 end subroutine
 
@@ -152,6 +154,41 @@ loop
 return false
 
 end function
+
+public subroutine dump_collisions (string as_filename);
+int dump, c, vmax = 0
+long buck
+dl_listitem item
+
+dump = fileopen(as_filename, linemode!, write!, lockwrite!, replace!)
+
+if dump = 0 then return
+
+FileWrite(dump, "my %colls = ();")
+
+for buck = 1 to upperbound(buckets[])
+	item = buckets[buck]
+	if isnull(item) or not isvalid(item) then continue
+	c = 0
+	FileWrite(dump, "$colls{" + string(buck) + "}=[")
+	do while not isnull(item) and isvalid(item)
+		c++
+		if c > vmax then vmax = c 
+		FileWrite(dump,"'" + item.key + "',")
+		item = item.dl_next
+	loop
+	FileWrite(dump, "];");
+next
+FileWrite(dump, "# maximum collision = " + string(vmax) + "~r~n &
+use feature 'say';~r~n &
+my $sum = 0, $avg = 0;~r~n &
+($sum += scalar @$_) foreach values %colls;~r~n &
+$avg = $sum / keys %colls;~r~n &
+say ~"avg = $avg~";")
+
+fileclose(dump)
+
+end subroutine
 
 on hash.create
 call super::create

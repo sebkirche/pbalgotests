@@ -75,12 +75,12 @@ word_generator wg
 wg = create word_generator
 wg.init("      ", 'A', 'Z')
 
-int i
-for i = 1 to 655//36
+long i
+for i = 1 to 65536
 	h.set(wg.next_seq_word() , true) //it will output collisions in DebugView
 	yield()
 next
-
+h.dump_collisions("collisions.pl")
 
 destroy wg
 
