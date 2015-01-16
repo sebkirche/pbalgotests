@@ -1,0 +1,8 @@
+Save Format v3.0(19990112)
+@begin Libraries
+ "various.pbl" "";
+@end;
+@begin Objects
+ "counter.sru" "various.pbl";
+ "w_create_controls.srw" "various.pbl";
+@end;

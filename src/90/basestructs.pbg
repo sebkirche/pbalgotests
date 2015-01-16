@@ -1,0 +1,8 @@
+Save Format v3.0(19990112)
+@begin Libraries
+ "basestructs.pbl" "";
+@end;
+@begin Objects
+ "queue.sru" "basestructs.pbl";
+ "stack.sru" "basestructs.pbl";
+@end;

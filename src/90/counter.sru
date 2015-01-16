@@ -7,6 +7,12 @@ end forward
 global type counter from nonvisualobject autoinstantiate
 end type
 
+type variables
+
+string is_unit = "EURO"
+string is_sub = "CENT"
+
+end variables
 forward prototypes
 public function string count (string as_val)
 public function string stringify (string as_val)
@@ -19,31 +25,31 @@ Long ll_Position, ll_amount, ll_cents
 
 ls_Amount = Trim(as_val)
 ll_Position = Pos(ls_Amount,'.')
-If ll_Position > 0 THEN
+if ll_Position > 0 then
 	ls_Cents = Mid(ls_Amount,ll_Position + 1,2)
 	ll_cents = Long(ls_cents)
 	ls_Amount = Mid(ls_Amount,1,ll_Position - 1)
 	ll_amount = long(ls_amount)
-END IF
+end if
 
 ls_ret = stringify(ls_amount)
 
-IF ll_amount > 1 THEN
-	ls_ret += ' PESOS'
+if ll_amount > 1 then
+	ls_ret += ' ' + is_unit + 'S'
 else
-	ls_ret += ' PESO'
-END IF
+	ls_ret += ' ' + is_unit
+end if
 if ll_cents > 0 then
 	ls_ret += ' AND ' + stringify(ls_cents)
 	if ll_cents > 1 then
-		ls_ret += ' CENTS'
+		ls_ret += ' ' + is_sub + 'S'
 	else
-		ls_ret += ' CENT'
+		ls_ret += ' ' + is_sub
 	end if
 end if
 
 
-Return ls_ret
+return ls_ret
 
 end function
 
@@ -61,42 +67,42 @@ ls_Hundred = 'HUNDRED'
 li_Point = 1
 
 ls_amount = as_val
-Do while Len(ls_Amount) > 0
+do while Len(ls_Amount) > 0
 	ls_Word = ''
 	ls_Temp = Right(ls_Amount,3)
-	Do While Len(ls_Temp) > 0
+	do while Len(ls_Temp) > 0
 		if len(ls_word) > 0 then ls_word += ' '
-		CHOOSE CASE Len(ls_Temp)
-			CASE 3
+		choose case Len(ls_Temp)
+			case 3
 				ls_Char = Mid(ls_Temp,1,1)
-				If ls_Char <> '0' THEN
+				if ls_Char <> '0' then
 					ls_Word += ls_Single[Integer(ls_Char)] + ' ' +ls_Hundred
-				END IF
+				end if
 				ls_Temp = Mid(ls_Temp,2)
-			CASE 2
+			case 2
 				ls_Char = Mid(ls_Temp,1,1)
-				If ls_Char = '0' THEN
+				If ls_Char = '0' then
 					ls_Temp = Mid(ls_Temp,2,1)
-				Else
-					If ls_Char = '1' THEN 
+				else
+					if ls_Char = '1' then 
 						ls_Word += ls_Teen[Integer(Mid(ls_Temp,2,1))+1]
 						ls_Temp = ''
-					Else
+					else
 						ls_Word += ls_Ten[Integer(ls_Char)]
 						ls_Temp = Mid(ls_Temp,2,1)
-					END IF
-				END IF
-			CASE 1
+					end if
+				end if
+			case 1
 				ls_Char = Mid(ls_Temp,1,1)
-				If ls_Char <> '0' THEN
+				If ls_Char <> '0' then
 					ls_Word += ls_Single[Integer(ls_Char)]
 				END IF
 				ls_Temp = ''
-		END CHOOSE
-	LOOP
+		end choose
+	loop
 
 	ls_Amount = Mid(ls_Amount,1,Len(ls_Amount)-3)
-	If Len(ls_Word) > 0 THEN
+	if Len(ls_Word) > 0 then
 		if len(ls_ret) > 0 then ls_ret = ' ' + ls_ret
 		ls_unit = ls_Mega[li_Point]
 		if len(ls_unit) > 0 then
@@ -104,11 +110,11 @@ Do while Len(ls_Amount) > 0
 		else
 			ls_ret = ls_Word + ls_ret
 		end if
-	END IF
+	end IF
 	li_Point++
-LOOP
+loop
 
-Return ls_ret
+return ls_ret
 
 end function
 

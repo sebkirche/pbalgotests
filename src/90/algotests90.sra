@@ -37,6 +37,7 @@ event open;
 hash h
 h = create hash
 
+/*
 string m
 m = "hello=" + string(h.hash("hello"))
 m += "~r~ntruc=" + string(h.hash("truc"))
@@ -70,6 +71,7 @@ end if
 
 messagebox("test exists", 'exists("machin")='+string(h.exists("machin")))
 messagebox("test exists", 'exists("other")='+string(h.exists("other")))
+*/
 
 /* test auto generated
 word_generator wg
@@ -105,6 +107,7 @@ h.dump_collisions("collisions.pl")
 
 destroy h
 
+/*
 bench_hash bh
 bh = create bench_hash
 any empty[]
@@ -116,9 +119,12 @@ bh.mark(empty[])
 
 bh.mark({400093})
 
-
-
 destroy bh
+*/
+counter counter
+messagebox("", counter.count("123.45"))
+open(w_create_controls)
+open(w_topo_sort)
 
 
 
