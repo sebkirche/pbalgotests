@@ -1,0 +1,25 @@
+$PBExportHeader$getbyte.srf
+global type getbyte from function_object
+end type
+
+forward prototypes
+global function integer getbyte (blob ab_data, long al_pos, ref integer al_dest)
+end prototypes
+
+global function integer getbyte (blob ab_data, long al_pos, ref integer al_dest);
+integer li_ret, li_byte
+
+if isnull(ab_data) or isnull(al_pos) or isnull(al_dest) then 
+	setnull(li_ret)
+	return li_ret
+end if
+
+if al_pos > len(ab_data) then return -1
+
+li_byte = asc(char(blobmid(ab_data, al_pos, 1)))
+al_dest = li_byte
+
+return 1
+
+end function
+

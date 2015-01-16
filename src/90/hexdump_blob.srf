@@ -1,0 +1,58 @@
+$PBExportHeader$hexdump_blob.srf
+global type hexdump_blob from function_object
+end type
+
+forward prototypes
+global function string hexdump_blob (blob abl_data, boolean ab_prettyprint, boolean ab_separate_bytes, boolean ab_fill_lastline, boolean ab_extended_chars)
+end prototypes
+
+global function string hexdump_blob (blob abl_data, boolean ab_prettyprint, boolean ab_separate_bytes, boolean ab_fill_lastline, boolean ab_extended_chars);
+//display blob content in a messagebox : usefull for debuggin.
+string ls_tohex = "0123456789ABCDEF"
+string ls_msg = "", ls_line, ls_binary
+long i, j, length
+integer b
+string ls_fill
+
+if isnull( abl_data ) then return ""
+
+if ab_fill_lastline then
+	ls_fill = " __"
+else
+	ls_fill = "   "
+end if
+
+length = len( abl_data )
+for i = 1 to length
+	GetByte( abl_data, i, b )
+	ls_line += mid( ls_tohex, 1+ mod(int(b/16),16), 1)
+	ls_line += mid( ls_tohex, 1+ mod(b,16), 1)
+	if ab_separate_bytes then ls_line += " "
+	ls_binary += string( iif(b>31 and b<128,char(b),iif(b>=128 and ab_extended_chars,char(b),".")))
+	if mod(i,16) = 0 and i > 0 then
+		ls_binary = replace( ls_binary, "~r", "·")	//no cr/lf
+		ls_binary = replace( ls_binary, "~n", "·")
+		ls_binary = replace( ls_binary, "~t", "·")
+		if ab_prettyprint then
+			ls_msg += "[" + string( i - 16, "0000") + "] " + ls_line + "~t" + ls_binary + "~r~n"
+		else
+			ls_msg += ls_line
+		end if
+		ls_line = ""
+		ls_binary = ""
+	end if
+next
+i -- // i - 1 due to the last loop in for
+if ab_fill_lastline then ls_line += fill(ls_fill, 3 * ( 16 - mod(i, 16) ) )
+if ab_prettyprint then
+	ls_msg += "[" + string( i - mod(i,16), "0000") + "] " + ls_line + "~t" + ls_binary
+else
+	ls_msg = ls_line
+end if
+
+//ls_msg = fastreplaceall(ls_msg, "~t", "    ")
+
+return ls_msg
+
+end function
+

@@ -1,0 +1,28 @@
+$PBExportHeader$replace.srf
+global type replace from function_object
+end type
+
+forward prototypes
+global function string replace (string as_src, string as_look, string as_rep)
+end prototypes
+
+global function string replace (string as_src, string as_look, string as_rep);
+long start_pos=1, len_look_for
+len_look_for = len(as_look)
+
+//find the first occurrence of look_for ...
+start_pos = Pos(as_src,as_look,start_pos)
+
+//only enter the loop if you find whats in look_for
+
+DO WHILE start_pos > 0
+ //replace look_for with replace_with ...
+ as_src = Replace(as_src, start_pos, Len_look_for, as_rep)
+ //find the next occurrence of look_for
+ start_pos = Pos(as_src, as_look, start_pos+Len(as_rep))
+LOOP
+
+return as_src
+
+end function
+

@@ -3,8 +3,13 @@ Save Format v3.0(19990112)
  "tools.pbl" "";
 @end;
 @begin Objects
+ "iif.srf" "tools.pbl";
  "split_to_array_of_anys.srf" "tools.pbl";
+ "display_blob.srf" "tools.pbl";
+ "hexdump_blob.srf" "tools.pbl";
  "split_to_array.srf" "tools.pbl";
  "split_to_array_at_index.srf" "tools.pbl";
+ "replace.srf" "tools.pbl";
  "split_to_array_of_longs.srf" "tools.pbl";
+ "getbyte.srf" "tools.pbl";
 @end;
