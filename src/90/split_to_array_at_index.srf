@@ -1,0 +1,36 @@
+$PBExportHeader$split_to_array_at_index.srf
+global type split_to_array_at_index from function_object
+end type
+
+forward prototypes
+global function boolean split_to_array_at_index (string as_string, string as_separator, ref string as_array[], long al_index)
+end prototypes
+
+global function boolean split_to_array_at_index (string as_string, string as_separator, ref string as_array[], long al_index);
+long d_pos, f_pos, idx
+string vide[]
+
+as_array = vide
+if isnull(as_string) or as_string = "" then 
+	return false
+end if
+
+d_pos = 1
+f_pos = pos(as_string, as_separator)
+idx = al_index
+if f_pos = 0 then 
+	as_array[ idx ] = as_string
+else
+	do
+		as_array[ idx ] = mid( as_string, d_pos, f_pos - d_pos)
+		d_pos = f_pos + 1
+		f_pos = pos(as_string,as_separator,d_pos)
+		idx ++
+	loop while f_pos > 0
+	as_array[ idx ] = mid( as_string, d_pos)
+end if
+
+return true
+
+end function
+

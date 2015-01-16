@@ -3,5 +3,5 @@ Save Format v3.0(19990112)
 @end;
 appname "algotests90";
 applib "algotests90.pbl";
-LibList "algotests90.pbl;basestructs.pbl;graphs.pbl;various.pbl";
+LibList "algotests90.pbl;basestructs.pbl;graphs.pbl;tools.pbl;various.pbl";
 type "pb";
