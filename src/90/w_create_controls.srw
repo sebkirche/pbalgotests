@@ -2,6 +2,22 @@ $PBExportHeader$w_create_controls.srw
 forward
 global type w_create_controls from window
 end type
+type sle_trg from singlelineedit within w_create_controls
+end type
+type sle_src from singlelineedit within w_create_controls
+end type
+type uo_static from uo_multi_static within w_create_controls
+end type
+type cb_radio from commandbutton within w_create_controls
+end type
+type uo_radio from uo_multi_radio_selector within w_create_controls
+end type
+type cb_1 from uo_coolbutton within w_create_controls
+end type
+type cb_array from commandbutton within w_create_controls
+end type
+type uo_array from v_array within w_create_controls
+end type
 type cb_read from commandbutton within w_create_controls
 end type
 type cb_create from commandbutton within w_create_controls
@@ -9,8 +25,8 @@ end type
 end forward
 
 global type w_create_controls from window
-integer width = 2533
-integer height = 1408
+integer width = 3109
+integer height = 1736
 boolean titlebar = true
 string title = "Dynamic control creation"
 boolean controlmenu = true
@@ -20,6 +36,14 @@ boolean resizable = true
 long backcolor = 67108864
 string icon = "AppIcon!"
 boolean center = true
+sle_trg sle_trg
+sle_src sle_src
+uo_static uo_static
+cb_radio cb_radio
+uo_radio uo_radio
+cb_1 cb_1
+cb_array cb_array
+uo_array uo_array
 cb_read cb_read
 cb_create cb_create
 end type
@@ -31,30 +55,195 @@ SingleLineEdit i_myedits[]
 end variables
 
 on w_create_controls.create
+this.sle_trg=create sle_trg
+this.sle_src=create sle_src
+this.uo_static=create uo_static
+this.cb_radio=create cb_radio
+this.uo_radio=create uo_radio
+this.cb_1=create cb_1
+this.cb_array=create cb_array
+this.uo_array=create uo_array
 this.cb_read=create cb_read
 this.cb_create=create cb_create
-this.Control[]={this.cb_read,&
+this.Control[]={this.sle_trg,&
+this.sle_src,&
+this.uo_static,&
+this.cb_radio,&
+this.uo_radio,&
+this.cb_1,&
+this.cb_array,&
+this.uo_array,&
+this.cb_read,&
 this.cb_create}
 end on
 
 on w_create_controls.destroy
+destroy(this.sle_trg)
+destroy(this.sle_src)
+destroy(this.uo_static)
+destroy(this.cb_radio)
+destroy(this.uo_radio)
+destroy(this.cb_1)
+destroy(this.cb_array)
+destroy(this.uo_array)
 destroy(this.cb_read)
 destroy(this.cb_create)
+end on
+
+type sle_trg from singlelineedit within w_create_controls
+integer x = 251
+integer y = 1240
+integer width = 343
+integer height = 92
+integer taborder = 90
+integer textsize = -8
+integer weight = 400
+fontcharset fontcharset = ansi!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = swiss!
+string facename = "Tahoma"
+long textcolor = 33554432
+borderstyle borderstyle = stylelowered!
+end type
+
+event dragdrop;
+singlelineedit lsle_source
+if typeof(source ) = singlelineedit! then
+ lsle_source = source
+ this.text = lsle_source.text
+end if 
+
+end event
+
+type sle_src from singlelineedit within w_create_controls
+integer x = 229
+integer y = 988
+integer width = 343
+integer height = 92
+integer taborder = 60
+string dragicon = "Query5!"
+boolean dragauto = true
+integer textsize = -8
+integer weight = 400
+fontcharset fontcharset = ansi!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = swiss!
+string facename = "Tahoma"
+long textcolor = 33554432
+string text = "none"
+borderstyle borderstyle = stylelowered!
+end type
+
+type uo_static from uo_multi_static within w_create_controls
+integer x = 1289
+integer y = 288
+integer taborder = 100
+boolean border = true
+string is_facename = "tahoma"
+end type
+
+on uo_static.destroy
+call uo_multi_static::destroy
+end on
+
+type cb_radio from commandbutton within w_create_controls
+integer x = 1600
+integer y = 56
+integer width = 416
+integer height = 112
+integer taborder = 40
+integer textsize = -8
+integer weight = 400
+fontcharset fontcharset = ansi!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = swiss!
+string facename = "Tahoma"
+string text = "radio test"
+end type
+
+event clicked;
+uo_radio.of_init( {"test1","test2","test3"})
+uo_static.of_init( {"test1","test2","test3"})
+
+end event
+
+type uo_radio from uo_multi_radio_selector within w_create_controls
+integer x = 686
+integer y = 288
+integer width = 594
+integer taborder = 70
+boolean border = true
+string is_facename = "tahoma"
+integer ii_textsize = 8
+end type
+
+on uo_radio.destroy
+call uo_multi_radio_selector::destroy
+end on
+
+type cb_1 from uo_coolbutton within w_create_controls
+integer x = 594
+integer y = 84
+integer taborder = 20
+end type
+
+type cb_array from commandbutton within w_create_controls
+integer x = 2066
+integer y = 312
+integer width = 416
+integer height = 112
+integer taborder = 80
+integer textsize = -8
+integer weight = 400
+fontcharset fontcharset = ansi!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = swiss!
+string facename = "Tahoma"
+string text = "draw array"
+end type
+
+event clicked;
+uo_array.setheaders({'a','b','c'})
+uo_array.setrowtags({'1','2','3'})
+int i,j
+for i = 1 to 3
+	for j = 1 to 3
+		uo_array.setcell( i, j, "")
+	next
+next
+uo_array.draw( )
+
+end event
+
+type uo_array from v_array within w_create_controls
+integer x = 1010
+integer y = 432
+integer width = 1687
+integer height = 1144
+integer taborder = 50
+boolean border = true
+borderstyle borderstyle = styleraised!
+boolean ib_collines = true
+boolean ib_rowlines = true
+end type
+
+on uo_array.destroy
+call v_array::destroy
 end on
 
 type cb_read from commandbutton within w_create_controls
 integer x = 2066
 integer y = 184
-integer width = 402
+integer width = 416
 integer height = 112
-integer taborder = 20
-integer textsize = -10
+integer taborder = 30
+integer textsize = -8
 integer weight = 400
 fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
-string facename = "Arial"
-string text = "read"
+string facename = "Tahoma"
+string text = "read statics"
 end type
 
 event clicked;
@@ -74,16 +263,16 @@ end event
 type cb_create from commandbutton within w_create_controls
 integer x = 2066
 integer y = 56
-integer width = 402
+integer width = 416
 integer height = 112
 integer taborder = 10
-integer textsize = -10
+integer textsize = -8
 integer weight = 400
 fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
-string facename = "Arial"
-string text = "create"
+string facename = "Tahoma"
+string text = "create statics"
 end type
 
 event clicked;

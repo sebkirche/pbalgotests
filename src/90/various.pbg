@@ -4,5 +4,9 @@ Save Format v3.0(19990112)
 @end;
 @begin Objects
  "counter.sru" "various.pbl";
+ "v_array.sru" "various.pbl";
+ "uo_multi_static.sru" "various.pbl";
  "w_create_controls.srw" "various.pbl";
+ "uo_multi_radio_selector.sru" "various.pbl";
+ "unvo_gdi.sru" "various.pbl";
 @end;
