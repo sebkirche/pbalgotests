@@ -5,9 +5,12 @@ Save Format v3.0(19990112)
 @begin Objects
  "iif.srf" "tools.pbl";
  "split_to_array_of_anys.srf" "tools.pbl";
+ "debug_message.srf" "tools.pbl";
  "display_blob.srf" "tools.pbl";
  "hexdump_blob.srf" "tools.pbl";
+ "isheritedfrom.srf" "tools.pbl";
  "split_to_array.srf" "tools.pbl";
+ "getparentwindow.srf" "tools.pbl";
  "split_to_array_at_index.srf" "tools.pbl";
  "replace.srf" "tools.pbl";
  "split_to_array_of_longs.srf" "tools.pbl";

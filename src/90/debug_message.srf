@@ -1,0 +1,45 @@
+$PBExportHeader$debug_message.srf
+global type debug_message from function_object
+end type
+
+type prototypes
+SUBROUTINE OutputDebugString (String lpszOutputString)  LIBRARY "kernel32.dll" ALIAS FOR "OutputDebugStringA;ansi";
+end prototypes
+
+forward prototypes
+global function integer debug_message (string as_title, string as_message)
+global function integer debug_message (string as_title, string as_message, long al_minlevel)
+end prototypes
+
+global function integer debug_message (string as_title, string as_message);
+
+if GL_DEBUG_LEVEL > 0 then
+	datastore lds_tmp
+	long i
+	string ls_debug_file
+	choose case GL_DEBUG_TYPE
+		case "TXT"
+			ls_debug_file = "c:\pb_debug.txt"
+			int hFile
+			hFile = FileOpen( "c:\pb_debug.txt", LineMode!, Write! )
+			FileWrite( hFile,  string( datetime(today(),now()), "dd/mm/yyyy hh:mm:ss" ) + "~t" + as_title + "~t" + as_message )
+			FileClose( hFile )
+		case "MSG"
+			messagebox( as_title, as_message)
+		case "ODS"
+			string ls_tmp
+			ls_tmp = "["+ as_title + "]~t" + as_message
+			OutputDebugString( ls_tmp )
+	end choose
+end if
+
+return 1
+end function
+
+global function integer debug_message (string as_title, string as_message, long al_minlevel);
+	if GL_DEBUG_LEVEL>=al_minlevel then
+		debug_message(as_title, as_message)
+	end if
+return 1
+end function
+

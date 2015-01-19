@@ -10,6 +10,16 @@ global error error
 global message message
 end forward
 
+global variables
+
+//Debug usage
+string GL_DEBUG_TYPE = "ODS" //MSG / TXT / ODS
+long GL_DEBUG_LEVEL = 1		// 1 = normal, 2=high, 3=paranoi
+constant long DEBUG_LEVEL_LOW = 1
+constant long DEBUG_LEVEL_HIGH = 2
+constant long DEBUG_LEVEL_PARANO = 3
+
+end variables
 global type algotests90 from application
 string appname = "algotests90"
 end type
@@ -121,10 +131,20 @@ bh.mark({400093})
 
 destroy bh
 */
+
+blob{256} bl
+int i
+//for i = 0 to 255
+//	blobedit(bl,i+1,blob(char(i)))
+//next
+//messagebox('blobedit', string(isnull(l))+'/'+string(l))
+//display_blob(bl)
+
+
 counter counter
-messagebox("", counter.count("123.45"))
+//messagebox("", counter.count("123.45"))
 open(w_create_controls)
-open(w_topo_sort)
+//open(w_topo_sort)
 
 
 

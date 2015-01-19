@@ -1,0 +1,29 @@
+$PBExportHeader$getparentwindow.srf
+global type getparentwindow from function_object
+end type
+
+forward prototypes
+global function window getparentwindow (powerobject apo_obj)
+end prototypes
+
+global function window getparentwindow (powerobject apo_obj);// Function to find the window (or window inherited object) parent of the given object
+//
+// Seki - 2007-07-27
+
+window winparent
+powerobject obj
+
+obj = apo_obj
+setNull(winparent)
+
+do while not isnull(obj)
+	if isHeritedFrom("window",obj) then
+		winparent = obj
+		exit
+	end if
+	obj = obj.GetParent()
+loop
+
+return winparent
+end function
+
