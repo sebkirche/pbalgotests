@@ -20,6 +20,7 @@ constant long DEBUG_LEVEL_HIGH = 2
 constant long DEBUG_LEVEL_PARANO = 3
 
 end variables
+
 global type algotests90 from application
 string appname = "algotests90"
 end type
@@ -143,10 +144,8 @@ int i
 
 counter counter
 //messagebox("", counter.count("123.45"))
-open(w_create_controls)
-//open(w_topo_sort)
-
-
+//open(w_create_controls)
+open(w_topo_sort)
 
 end event
 
