@@ -42,10 +42,9 @@ global w_topo_sort w_topo_sort
 
 type variables
 
-matrix_topo_sort_test toposort
+dgraph_matrix toposort
 
 end variables
-
 forward prototypes
 public function boolean fill_matrix ()
 end prototypes
@@ -104,7 +103,7 @@ destroy(this.gb_mx)
 end on
 
 event open;
-toposort = create matrix_topo_sort_test 
+toposort = create dgraph_matrix
 
 end event
 
@@ -144,7 +143,7 @@ string facename = "Consolas"
 long textcolor = 33554432
 long backcolor = 67108864
 string text = "List~r~nof~r~nVertices"
-alignment alignment = Center!
+alignment alignment = center!
 boolean focusrectangle = false
 end type
 

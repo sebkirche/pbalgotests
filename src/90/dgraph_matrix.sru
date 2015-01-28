@@ -1,12 +1,12 @@
-$PBExportHeader$matrix_topo_sort_test.sru
+$PBExportHeader$dgraph_matrix.sru
 forward
-global type matrix_topo_sort_test from nonvisualobject
+global type dgraph_matrix from nonvisualobject
 end type
 end forward
 
-global type matrix_topo_sort_test from nonvisualobject
+global type dgraph_matrix from nonvisualobject
 end type
-global matrix_topo_sort_test matrix_topo_sort_test
+global dgraph_matrix dgraph_matrix
 
 type variables
 
@@ -20,6 +20,7 @@ boolean ib_incid[]	//incidence matrix
 long il_indeg[]		//in-degree 
 long il_toposort[]
 end variables
+
 forward prototypes
 public subroutine set_totalnodes (long al_max)
 public subroutine compute_indegree ()
@@ -113,12 +114,12 @@ ib_incid[mxpos(al_src, al_trg)] = true
 
 end subroutine
 
-on matrix_topo_sort_test.create
+on dgraph_matrix.create
 call super::create
 TriggerEvent( this, "constructor" )
 end on
 
-on matrix_topo_sort_test.destroy
+on dgraph_matrix.destroy
 TriggerEvent( this, "destructor" )
 call super::destroy
 end on
