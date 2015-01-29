@@ -4,5 +4,5 @@ Save Format v3.0(19990112)
 @end;
 @begin Objects
  "w_topo_sort.srw" "graphs.pbl";
- "matrix_topo_sort_test.sru" "graphs.pbl";
+ "dgraph_matrix.sru" "graphs.pbl";
 @end;
