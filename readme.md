@@ -12,7 +12,7 @@ Base Structures
 
 Graphs
 ------
-* `matrix_topo_sort.sru`: a non-destructive topological sort performed on an adjacency matrix and source queue processing.
+* `dgraph_matrix.sru`: a adjacency matrix based graph representation that can perform a non-destructive topological sort via a source queue processing.
 
 Other
 -----
