@@ -203,12 +203,29 @@ string text = "draw array"
 end type
 
 event clicked;
+unvo_gdi gdi
+
+long em_width, em_height, col_width
+long test_len = 10
+string test_str
+test_str = fill('M',test_len)
+
+col_width = gdi.of_getstringwidthunits(parent, test_str, uo_array.is_font, uo_array.ii_fontsize, false, false)
+em_width = gdi.of_getstringwidthunits(parent, 'M', uo_array.is_font, uo_array.ii_fontsize, false, false)
+em_height = gdi.of_getstringheightunits(parent, 'M', uo_array.is_font, uo_array.ii_fontsize, false, false)
+
 uo_array.setheaders({'a','b','c'})
 uo_array.setrowtags({'1','2','3'})
+
+
+uo_array.ii_colwidth = col_width
+uo_array.ii_rowheight = em_height
+uo_array.ii_rowtagswidth = 3 * em_width
+
 int i,j
 for i = 1 to 3
 	for j = 1 to 3
-		uo_array.setcell( i, j, "")
+		uo_array.setcell( i, j, iif(i=j, test_str, ""))
 	next
 next
 uo_array.draw( )
@@ -225,6 +242,7 @@ boolean border = true
 borderstyle borderstyle = styleraised!
 boolean ib_collines = true
 boolean ib_rowlines = true
+integer ii_fontsize = 9
 end type
 
 on uo_array.destroy

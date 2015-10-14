@@ -84,13 +84,14 @@ for r = 0 to ii_rows
 	if c = 0 or r = 0 then
 		if c = 0 and r > 0 then
 			st.text = is_row[r]
+			st.width = ii_rowtagswidth
 		elseif r = 0 and c > 0 then
 			st.text = is_header[c]
 		else
 			continue
 		end if
 	else
-	    st.text = string(r)+string(c)
+	    st.text = is_cell[ (r - 1) * ii_cols + c ]// string(r)+string(c)
 	end if
 	
 	if c = 0 then
